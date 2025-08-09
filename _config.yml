@@ -1,0 +1,9 @@
+title: NLM Mardochée Tech
+email: nsimbalutumbamardochee@gmail.com
+description: >-
+  Un site pour apprendre et suivre l'actualité tech avec NLM Mardochée.
+baseurl: ""
+url: ""
+theme: minima
+plugins:
+  - jekyll-feed
