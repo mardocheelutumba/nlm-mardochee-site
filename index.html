@@ -4,21 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NLM Mardochée Vision 243</title>
-  
-  <!-- Police Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  
-  <!-- CSS externe -->
-  <link rel="stylesheet" href="style.css" />
 
-  <!-- Icônes FontAwesome (pour améliorer les icônes) -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome (icônes) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Barre latérale -->
-  <div class="sidebar" id="sidebar">
-    <h2>NLM Vision 243</h2>
+  <!-- --------------------------
+       a) Bouton menu mobile
+       (À placer **immédiatement** après <body>)
+       -------------------------- -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Ouvrir le menu">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- --------------------------
+       b) Overlay pour fermer la sidebar
+       (Placer juste après le bouton mobile)
+       -------------------------- -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <!-- --------------------------
+       c) Barre latérale (remplace l'ancienne sidebar)
+       -------------------------- -->
+  <div class="sidebar" id="sidebar" role="navigation" aria-label="Barre latérale principale">
+    <h2><i class="fas fa-brain"></i> NLM Vision 243</h2>
+
     <nav>
       <ul>
         <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
@@ -29,26 +46,41 @@
         <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
       </ul>
     </nav>
-    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Fermer le menu">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <!-- Toggle du thème -->
+    <div style="margin-top: auto; display: flex; gap: 10px; align-items: center;">
+      <span style="font-size:0.95rem">Thème</span>
+      <button class="btn ghost" id="themeToggleBtn" aria-pressed="false">
+        <i class="fas fa-moon"></i> Sombre
+      </button>
+    </div>
   </div>
 
-  <!-- Contenu principal -->
+  <!-- --------------------------
+       Contenu principal
+       -------------------------- -->
   <main>
-    <!-- Section accueil -->
-    <header id="accueil">
+    <header id="accueil" class="hero">
       <div class="top-bar">
-        <select>
+        <select aria-label="Choisir la langue">
           <option>Français</option>
           <option>English</option>
         </select>
         <div class="profile-icon">👤</div>
       </div>
+
       <h1>Bienvenue sur NLM Mardochée</h1>
-      <p>Le hub pour apprendre l'informatique, IA, programmation, cybersécurité et plus.</p>
-      <input type="search" placeholder="Rechercher un cours, un article..." />
+      <p class="subtitle">Le hub pour apprendre l'informatique, IA, programmation, cybersécurité et suivre l'actualité tech.</p>
+
+      <div class="search-wrapper">
+        <input type="search" placeholder="Rechercher un cours, un article..." aria-label="Rechercher" />
+      </div>
     </header>
 
-    <!-- Section Cours -->
     <section id="cours" class="modules">
       <h2>Thèmes</h2>
       <ul>
@@ -60,63 +92,92 @@
       </ul>
     </section>
 
-    <!-- Section Articles -->
+    <!-- --------------------------
+         d) Section Articles (remplace l'ancienne section articles)
+         -------------------------- -->
     <section id="articles" class="articles">
       <h2>Cours & Articles</h2>
-      <div class="card">
+
+      <div class="card" data-id="article-ia-intro">
         <h3>Découvrir l'intelligence artificielle</h3>
         <p><em>Publié le 2025-08-10 • IA, Intro</em></p>
         <p>Bases, usages et premiers pas pour débuter.</p>
+
         <div class="article-actions">
-          <button class="like-btn">👍 J'aime</button>
-          <button class="comment-btn">💬 Commenter</button>
-          <button class="share-btn">🔗 Partager</button>
+          <button class="like-btn" data-id="article-ia-intro" aria-pressed="false">
+            <i class="far fa-thumbs-up"></i> J'aime <span class="like-count">0</span>
+          </button>
+
+          <button class="comment-btn" data-id="article-ia-intro" aria-expanded="false">
+            <i class="far fa-comment"></i> Commenter
+          </button>
+
+          <button class="share-btn" data-id="article-ia-intro">
+            <i class="fas fa-share-alt"></i> Partager
+          </button>
         </div>
+
+        <!-- Section Commentaires (initialement masquée) -->
+        <div class="comment-section" id="commentsSection-article-ia-intro" style="display: none;">
+          <div class="comment-input">
+            <input type="text" placeholder="Ajouter un commentaire..." id="commentInput-article-ia-intro" />
+            <button type="button" aria-label="Envoyer commentaire" onclick="addComment('article-ia-intro')">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+
+          <div class="comments-list" id="commentsList-article-ia-intro">
+            <!-- Les commentaires seront ajoutés ici dynamiquement -->
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Section Chat AI -->
+    <!-- Chat AI -->
     <section id="chat" class="chat-ai">
       <h2>Chat AI</h2>
-      <div class="chat-box" id="chat-box">
-        <p><strong>AI :</strong> Bonjour Mardochée ! Que veux-tu apprendre aujourd’hui ?</p>
+
+      <div class="chat-box" id="chatBox" role="log" aria-live="polite">
+        <div class="msg ai"><strong>AI :</strong> Bonjour Mardochée ! Que veux-tu apprendre aujourd’hui ?</div>
       </div>
+
       <div class="chat-input">
-        <input type="text" id="user-input" placeholder="Tapez votre message..." />
-        <button onclick="sendMessage()">Envoyer</button>
+        <input type="text" id="userMessage" placeholder="Écrivez un message..." aria-label="Message" />
+        <button id="sendChat" class="btn">Envoyer</button>
       </div>
     </section>
 
-    <!-- Section Contact -->
+    <!-- Contact -->
     <section id="contact" class="formulaire">
       <h2>Contact</h2>
       <form id="contact-form">
-        <input type="text" placeholder="Nom / Pseudo" required />
-        <input type="email" placeholder="Email" required />
-        <textarea placeholder="Message ou question..." required></textarea>
-        <button type="submit">Envoyer</button>
+        <input name="name" type="text" placeholder="Nom / Pseudo" required />
+        <input name="email" type="email" placeholder="Email" required />
+        <textarea name="message" placeholder="Message ou question..." required></textarea>
+        <button type="submit" class="btn">Envoyer</button>
       </form>
     </section>
 
-    <!-- Section Profil -->
+    <!-- Profil -->
     <section id="profil" class="profil">
       <h2>À propos</h2>
       <p>Étudiant à l'École Informatique de Finance (EIFI), passionné par les NTIC. Ambitieux avec de grands projets.</p>
       <p>Email : nsimbalutumbamardochee@gmail.com</p>
       <p>WhatsApp : +243892420927 / +243817937907</p>
       <div class="interactions">
-        <button>👍 Like</button>
-        <button>💬 Commenter</button>
+        <button class="btn ghost">👍 Like</button>
+        <button class="btn ghost">💬 Commenter</button>
       </div>
     </section>
   </main>
 
-  <!-- Pied de page -->
+  <!-- Footer -->
   <footer>
     <p>© 2025 NLM Mardochée Vision 243 — Tous droits réservés</p>
   </footer>
 
-  <!-- Script JS externe -->
+  <!-- JS -->
   <script src="app.js"></script>
 </body>
-                                                 </html>
+    </html>
