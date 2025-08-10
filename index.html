@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NLM Mardochée Vision 243</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <aside class="sidebar">
+  <div class="sidebar" id="sidebar">
     <h2>NLM Vision 243</h2>
     <nav>
       <ul>
@@ -19,33 +20,41 @@
         <li><a href="#">Contact</a></li>
       </ul>
     </nav>
-  </aside>
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+  </div>
 
   <main>
     <header>
-      <h1>Bienvenue sur NLM Mardochée Vision 243</h1>
-      <p>Plateforme tech éducative pour l’Afrique et le monde.</p>
+      <div class="top-bar">
+        <select>
+          <option>Français</option>
+          <option>English</option>
+        </select>
+        <div class="profile-icon">👤</div>
+      </div>
+      <h1>Bienvenue sur NLM Mardochée</h1>
+      <p>Le hub pour apprendre l'informatique, IA, programmation, cybersécurité et plus.</p>
       <input type="search" placeholder="Rechercher un cours, un article..." />
-      <select>
-        <option>Français</option>
-        <option>English</option>
-      </select>
     </header>
 
-    <section class="intro">
-      <h2>À propos</h2>
-      <p>Étudiant à l'École Informatique de Finance (EIFI), passionné par les NTIC. Visionnaire, ambitieux, et engagé pour l'éducation numérique.</p>
-    </section>
-
     <section class="modules">
-      <h2>Modules disponibles</h2>
+      <h2>Thèmes</h2>
       <ul>
         <li>Algorithmique</li>
         <li>Programmation</li>
-        <li>Intelligence Artificielle</li>
-        <li>Machine Learning</li>
-        <li>Cybersécurité</li>
+        <li>IA</li>
+        <li>Cyber sécurité</li>
+        <li>Discussions</li>
       </ul>
+    </section>
+
+    <section class="articles">
+      <h2>Cours & Articles</h2>
+      <div class="card">
+        <h3>Découvrir l'intelligence artificielle</h3>
+        <p><em>Publié le 2025-08-10 • IA, Intro</em></p>
+        <p>Bases, usages et premiers pas pour débuter.</p>
+      </div>
     </section>
 
     <section class="chat-ai">
@@ -64,11 +73,27 @@
         <button type="submit">Envoyer</button>
       </form>
     </section>
+
+    <section class="profil">
+      <h2>À propos</h2>
+      <p>Étudiant à l'École Informatique de Finance (EIFI), passionné par les NTIC. Ambitieux avec de grands projets.</p>
+      <p>Email : nsimbalutumbamardochee@gmail.com</p>
+      <p>WhatsApp : +243892420927 / +243817937907</p>
+      <div class="interactions">
+        <button>👍 Like</button>
+        <button>💬 Commenter</button>
+      </div>
+    </section>
   </main>
 
   <footer>
     <p>© 2025 NLM Mardochée Vision 243 — Tous droits réservés</p>
-    <p>Contact : nsimbalutumbamardochee@gmail.com | WhatsApp : +243892420927 / +243817937907</p>
   </footer>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('closed');
+    }
+  </script>
 </body>
-        </html>
+    </html>
