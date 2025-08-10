@@ -4,22 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NLM Mardochée Vision 243</title>
-  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Police Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  
+  <!-- CSS externe -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Icônes FontAwesome (pour améliorer les icônes) -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <!-- Sidebar -->
+  <!-- Barre latérale -->
   <div class="sidebar" id="sidebar">
     <h2>NLM Vision 243</h2>
     <nav>
       <ul>
-        <li><a href="#accueil">🏠 Accueil</a></li>
-        <li><a href="#cours">📚 Cours</a></li>
-        <li><a href="#articles">📰 Articles</a></li>
-        <li><a href="#editeur">💻 Éditeur</a></li>
-        <li><a href="#chat">🤖 Chat AI</a></li>
-        <li><a href="#contact">📩 Contact</a></li>
+        <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
+        <li><a href="#cours"><i class="fas fa-book"></i> Cours</a></li>
+        <li><a href="#articles"><i class="fas fa-newspaper"></i> Articles</a></li>
+        <li><a href="#editeur"><i class="fas fa-code"></i> Éditeur</a></li>
+        <li><a href="#chat"><i class="fas fa-robot"></i> Chat AI</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
       </ul>
     </nav>
     <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
@@ -27,6 +34,7 @@
 
   <!-- Contenu principal -->
   <main>
+    <!-- Section accueil -->
     <header id="accueil">
       <div class="top-bar">
         <select>
@@ -40,6 +48,7 @@
       <input type="search" placeholder="Rechercher un cours, un article..." />
     </header>
 
+    <!-- Section Cours -->
     <section id="cours" class="modules">
       <h2>Thèmes</h2>
       <ul>
@@ -51,32 +60,45 @@
       </ul>
     </section>
 
+    <!-- Section Articles -->
     <section id="articles" class="articles">
       <h2>Cours & Articles</h2>
       <div class="card">
         <h3>Découvrir l'intelligence artificielle</h3>
         <p><em>Publié le 2025-08-10 • IA, Intro</em></p>
         <p>Bases, usages et premiers pas pour débuter.</p>
+        <div class="article-actions">
+          <button class="like-btn">👍 J'aime</button>
+          <button class="comment-btn">💬 Commenter</button>
+          <button class="share-btn">🔗 Partager</button>
+        </div>
       </div>
     </section>
 
+    <!-- Section Chat AI -->
     <section id="chat" class="chat-ai">
       <h2>Chat AI</h2>
-      <div class="chat-box">
+      <div class="chat-box" id="chat-box">
         <p><strong>AI :</strong> Bonjour Mardochée ! Que veux-tu apprendre aujourd’hui ?</p>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Tapez votre message..." />
+        <button onclick="sendMessage()">Envoyer</button>
       </div>
     </section>
 
+    <!-- Section Contact -->
     <section id="contact" class="formulaire">
       <h2>Contact</h2>
-      <form>
-        <input type="text" placeholder="Nom / Pseudo" />
-        <input type="email" placeholder="Email" />
-        <textarea placeholder="Message ou question..."></textarea>
+      <form id="contact-form">
+        <input type="text" placeholder="Nom / Pseudo" required />
+        <input type="email" placeholder="Email" required />
+        <textarea placeholder="Message ou question..." required></textarea>
         <button type="submit">Envoyer</button>
       </form>
     </section>
 
+    <!-- Section Profil -->
     <section id="profil" class="profil">
       <h2>À propos</h2>
       <p>Étudiant à l'École Informatique de Finance (EIFI), passionné par les NTIC. Ambitieux avec de grands projets.</p>
@@ -89,14 +111,12 @@
     </section>
   </main>
 
+  <!-- Pied de page -->
   <footer>
     <p>© 2025 NLM Mardochée Vision 243 — Tous droits réservés</p>
   </footer>
 
-  <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('closed');
-    }
-  </script>
+  <!-- Script JS externe -->
+  <script src="app.js"></script>
 </body>
-        </html>
+                                                 </html>
