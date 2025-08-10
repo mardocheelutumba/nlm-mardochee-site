@@ -1,69 +1,96 @@
+/* ==== STYLE GLOBAL ==== */
 body {
-  margin: 0; padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police moderne et élégante */
+  background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364); /* Dégradé circulaire plus artistique */
+  color: #e5e5e5;
+  line-height: 1.7; /* Plus d’espace entre les lignes pour un texte aéré */
 }
 
+/* ==== EN-TÊTE ==== */
 header {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 1.2rem 3rem; /* Plus d’espace autour du contenu */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 0 10px #00fff7;
+  box-shadow: 0 0 15px #00fff7;
   position: sticky;
   top: 0;
   z-index: 1000;
+  backdrop-filter: blur(8px); /* Effet verre dépoli */
 }
 
 header h1 {
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 800;
+  letter-spacing: 0.15em;
   color: #00fff7;
+  text-transform: uppercase; /* Plus imposant */
 }
 
+/* ==== NAVIGATION ==== */
 nav a {
   color: #a0f0ff;
-  margin-left: 1.5rem;
+  margin-left: 1.8rem;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s ease;
+  font-size: 1.05rem;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 nav a:hover {
   color: #00fff7;
+  transform: scale(1.08);
 }
 
+/* ==== SECTION HERO ==== */
 .hero {
-  padding: 3rem 2rem;
+  padding: 4rem 2rem;
   text-align: center;
   animation: fadeIn 2s ease forwards;
 }
 
+.hero h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.hero p {
+  max-width: 650px;
+  margin: auto;
+  font-size: 1.15rem;
+}
+
+/* ==== SECTIONS GÉNÉRALES ==== */
 section {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem 2rem;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
-  box-shadow: 0 0 15px #00fff7;
+  max-width: 950px;
+  margin: 2.5rem auto;
+  padding: 2rem 2.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  box-shadow: 0 0 18px #00fff7;
   animation: fadeInUp 1.5s ease forwards;
 }
 
 article h3 {
   color: #00fff7;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
 }
 
+/* ==== PIED DE PAGE ==== */
 footer {
   text-align: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.7);
-  color: #666;
+  padding: 1.2rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #888;
   font-size: 0.9rem;
   letter-spacing: 0.05em;
+  backdrop-filter: blur(5px);
 }
 
+/* ==== ANIMATIONS ==== */
 @keyframes fadeIn {
   from {opacity: 0;}
   to {opacity: 1;}
@@ -74,6 +101,7 @@ footer {
   to {opacity: 1; transform: translateY(0);}
 }
 
+/* ==== RESPONSIVE ==== */
 @media (max-width: 600px) {
   nav a {
     margin-left: 1rem;
@@ -84,4 +112,8 @@ footer {
     margin: 1rem;
     padding: 1rem;
   }
-    }
+
+  .hero h2 {
+    font-size: 1.8rem;
+  }
+}
