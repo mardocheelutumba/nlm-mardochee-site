@@ -1,42 +1,324 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NLM Mardochée Tech</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NLM MARDOCHÉE — Tech, IA & Apprentissage</title>
+  <meta name="description" content="NLM Mardochée — articles, tutoriels, actualités tech, chatbot et éditeur de code. Publie depuis ton téléphone." />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#071023; --bg2:#0b2440;
+      --card:#081226; --glass: rgba(255,255,255,0.03);
+      --muted:#9fb0c2; --accent1:#7c3aed; --accent2:#06b6d4;
+      --neon: #00fff7;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.06), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e9f2fb;-webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    /* Layout */
+    .wrap{max-width:1100px;margin:28px auto;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:64px;height:64px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:grid;place-items:center;font-weight:800;color:#02121b;font-size:18px;
+      box-shadow:0 8px 30px rgba(124,58,237,0.12);
+    }
+    h1{margin:0;font-size:18px}
+    .tagline{color:var(--muted);font-size:13px}
+
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-weight:600}
+    nav a.cta{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#02121b}
+    nav a:hover{color:var(--neon)}
+
+    main{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    .hero{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:28px;border-radius:16px;border:1px solid rgba(255,255,255,0.03)}
+    .hero h2{margin:0;font-size:26px;color:var(--neon);letter-spacing:0.02em}
+    .hero p{color:var(--muted);margin-top:8px}
+
+    .features{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .chip{background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:999px;color:var(--muted);font-weight:600;font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* Articles list */
+    .card{background:var(--card);padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 12px 30px rgba(2,6,23,0.5)}
+    .posts{display:grid;gap:12px;margin-top:12px}
+    .post{padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:12px;display:block;text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.02);transition:transform .18s ease, box-shadow .18s ease}
+    .post:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(2,6,23,0.6)}
+    .post h3{margin:0;color:var(--neon);font-size:18px}
+    .post p{margin:6px 0 0;color:var(--muted);font-size:14px}
+
+    /* Right column */
+    aside.right{display:flex;flex-direction:column;gap:12px}
+    .small{font-size:13px;color:var(--muted)}
+    .contact-card a{display:block;color:inherit;text-decoration:none;margin-top:6px}
+
+    /* Floating chat button */
+    .chat-btn{
+      position:fixed;right:18px;bottom:18px;width:64px;height:64px;border-radius:999px;
+      display:grid;place-items:center;font-size:28px;background:linear-gradient(135deg,var(--accent2),var(--accent1));
+      color:#02121b;box-shadow:0 12px 30px rgba(6,182,212,0.12);cursor:pointer;z-index:9999;border:0;
+    }
+    .chat-panel{
+      position:fixed;right:18px;bottom:96px;width:360px;max-width:92vw;height:520px;background:linear-gradient(180deg,rgba(2,6,23,0.98),#071025);
+      border-radius:14px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 30px 80px rgba(2,6,23,0.6);z-index:9998;overflow:hidden;display:none;flex-direction:column;
+    }
+    .chat-header{display:flex;align-items:center;justify-content:space-between;padding:12px;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .chat-body{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+    .msg{max-width:78%;padding:10px;border-radius:10px;background:rgba(255,255,255,0.03);color:var(--muted);font-size:14px}
+    .msg.user{align-self:flex-end;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#02121b;font-weight:700}
+    .chat-input{display:flex;padding:10px;border-top:1px solid rgba(255,255,255,0.03);gap:8px}
+    .chat-input input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .chat-input button{padding:10px 12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#02121b;font-weight:700;cursor:pointer}
+
+    /* Editor preview */
+    .editor-card{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .mini-btn{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);cursor:pointer}
+
+    /* Responsive */
+    @media (max-width:920px){
+      main{grid-template-columns:1fr}
+      .chat-panel{right:6px;left:6px;bottom:86px;width:auto;height:60vh;max-width:none}
+    }
+
+    /* small flourish */
+    .sparkle{display:inline-block;margin-left:8px;color:var(--accent2);font-weight:700}
+  </style>
 </head>
 <body>
-  <header>
-    <h1>NLM Mardochée Tech</h1>
-    <nav>
-      <a href="#accueil">Accueil</a>
-      <a href="#articles">Articles</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  <div class="wrap" role="document">
+    <header>
+      <div class="brand">
+        <div class="logo">NLM</div>
+        <div>
+          <h1>NLM MARDOCHÉE Tech</h1>
+          <div class="tagline">Explorer • Apprendre • Créer <span class="sparkle">Vision 243</span></div>
+        </div>
+      </div>
+      <nav aria-label="Navigation principale">
+        <a href="#accueil">Accueil</a>
+        <a href="#articles">Articles</a>
+        <a href="#apprendre">Apprendre</a>
+        <a class="cta" href="#contact">Contact</a>
+      </nav>
+    </header>
 
-  <section id="accueil" class="hero">
-    <h2>Explorer, Apprendre, Créer</h2>
-    <p>Bienvenue sur le site officiel de NLM Mardochée dédié à l'informatique, l'IA, la cybersécurité et la programmation.</p>
-  </section>
+    <main>
+      <section class="hero card" id="accueil" aria-labelledby="hero-title">
+        <h2 id="hero-title">Bienvenue sur NLM Mardochée — le hub tech</h2>
+        <p>Articles, tutoriels, actualités, chatbot et espace pratique pour coder — tout pour apprendre et comprendre l'informatique et l'IA.</p>
 
-  <section id="articles">
-    <h2>Article Exemple</h2>
-    <article>
-      <h3>Découvrir l’intelligence artificielle</h3>
-      <p>L’intelligence artificielle (IA) est une révolution dans le monde de la technologie. Apprends avec nous les bases et les avancées passionnantes.</p>
-    </article>
-  </section>
+        <div class="features" aria-hidden="false">
+          <div class="chip">IA & ML</div>
+          <div class="chip">Cybersécurité</div>
+          <div class="chip">Programmation</div>
+          <div class="chip">Tutoriels pas-à-pas</div>
+          <div class="chip">Chatbot intelligent</div>
+        </div>
 
-  <section id="contact">
-    <h2>Contactez-moi</h2>
-    <p>Email : <a href="mailto:nsimbalutumbamardochee@gmail.com">nsimbalutumbamardochee@gmail.com</a></p>
-    <p>WhatsApp : <a href="https://wa.me/243892420927" target="_blank">+243 89 242 09 27</a>, <a href="https://wa.me/243817937907" target="_blank">+243 81 793 79 07</a></p>
-  </section>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="mini-btn" onclick="openEditor()">Éditeur rapide</button>
+          <button class="mini-btn" onclick="document.getElementById('chatBtn').click()">Poser une question</button>
+        </div>
 
-  <footer>
-    <p>© 2025 NLM Mardochée</p>
-  </footer>
+        <div class="posts card" style="margin-top:18px">
+          <a class="post" href="#post-1">
+            <h3>Découvrir l’intelligence artificielle</h3>
+            <p>Les bases de l'IA — concepts, usages, et comment commencer aujourd'hui.</p>
+          </a>
+          <a class="post" href="#post-2">
+            <h3>Cyber-sécurité pour débutants</h3>
+            <p>Comprendre les bonnes pratiques pour protéger un projet personnel.</p>
+          </a>
+        </div>
+      </section>
+
+      <aside class="right">
+        <div class="card contact-card">
+          <div style="font-weight:700">Contact</div>
+          <div class="small">Email</div>
+          <a href="mailto:nsimbalutumbamardochee@gmail.com">nsimbalutumbamardochee@gmail.com</a>
+          <div class="small" style="margin-top:6px">WhatsApp</div>
+          <a href="https://wa.me/243892420927" target="_blank">+243 89 242 09 27</a>
+          <a href="https://wa.me/243817937907" target="_blank">+243 81 793 79 07</a>
+        </div>
+
+        <div class="card editor-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">Apprendre</div>
+            <div class="small">Progression</div>
+          </div>
+          <div style="margin-top:12px;color:var(--muted);font-size:14px">Modules rapides : HTML • CSS • Python • Sécurité</div>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="mini-btn" onclick="window.location.hash='apprendre'">Voir les cours</button>
+            <button class="mini-btn" onclick="alert('Fonction bientôt disponible')">Quiz</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-weight:700">À la une</div>
+          <div style="margin-top:8px;color:var(--muted);font-size:13px">Flux d'actualité et ressources</div>
+        </div>
+      </aside>
+    </main>
+
+    <footer style="margin-top:18px;text-align:center;color:var(--muted);font-size:13px">
+      © 2025 NLM Mardochée — Tout droit réservé • Site expérimental
+    </footer>
+  </div>
+
+  <!-- Chat button -->
+  <button id="chatBtn" class="chat-btn" title="Ouvrir le chat">💬</button>
+
+  <!-- Chat panel -->
+  <div id="chatPanel" class="chat-panel" role="dialog" aria-hidden="true" aria-label="Chatbot NLM">
+    <div class="chat-header">
+      <div><strong>NLM MARDOCHÉE IA</strong><div class="small">Assistant tech & apprentissage</div></div>
+      <div><button style="background:transparent;border:0;color:var(--muted);cursor:pointer" id="closeChat">✖</button></div>
+    </div>
+    <div class="chat-body" id="chatBody" aria-live="polite">
+      <!-- messages -->
+      <div class="msg" role="status">Salut — je suis NLM IA. Pose ta question sur l'informatique, l'IA, ou la sécurité.</div>
+    </div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Tape ta question et appuie sur Entrée..." aria-label="Message"/>
+      <button id="sendBtn">Envoyer</button>
+    </div>
+  </div>
+
+  <script>
+    // ====== UI interactions ======
+    const chatBtn = document.getElementById('chatBtn');
+    const chatPanel = document.getElementById('chatPanel');
+    const closeChat = document.getElementById('closeChat');
+    const chatBody = document.getElementById('chatBody');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    chatBtn.addEventListener('click', ()=>{ toggleChat(true) });
+    closeChat.addEventListener('click', ()=>{ toggleChat(false) });
+
+    function toggleChat(open){
+      if(open){
+        chatPanel.style.display='flex';
+        chatPanel.setAttribute('aria-hidden','false');
+        chatInput.focus();
+      } else {
+        chatPanel.style.display='none';
+        chatPanel.setAttribute('aria-hidden','true');
+      }
+    }
+
+    // Small helper to append messages
+    function appendMessage(text, who='bot'){
+      const d = document.createElement('div');
+      d.className = 'msg ' + (who==='user' ? 'user' : 'bot');
+      d.textContent = text;
+      chatBody.appendChild(d);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    // ====== Simple FAQ engine (works offline) ======
+    const FAQ = [
+      {q:'Qu\'est-ce que l\'IA ?', a:'L\'IA (intelligence artificielle) est un ensemble de techniques qui permettent aux machines d\'apprendre et de faire des tâches intelligentes.'},
+      {q:'Comment débuter en programmation ?', a:'Commence par choisir un langage (Python pour débuter), fais des petits projets, et pratique régulièrement.'},
+      {q:'Comment sécuriser un site ?', a:'Utilise HTTPS, validate les entrées côté serveur, fais des sauvegardes régulières et garde tes dépendances à jour.'},
+      {q:'Où apprendre l\'IA ?', a:'Des plateformes comme Coursera, edX, et des tutoriels gratuits (YouTube, blogs, docs officielles) sont d’excellents points de départ.'}
+    ];
+
+    function findBestAnswer(text){
+      text = text.toLowerCase();
+      for(const f of FAQ){
+        if(text.includes(f.q.split(' ')[0].toLowerCase()) || text.includes(f.q.split(' ')[0].toLowerCase().replace("'",""))){
+          return f.a;
+        }
+      }
+      // fallback simple keyword checks:
+      if(/python|début|commencer|apprendre/.test(text)) return FAQ[1].a;
+      if(/sécur|https|csrf|xss/.test(text)) return FAQ[2].a;
+      if(/où|ou|cours|apprendre/.test(text)) return FAQ[3].a;
+      return null;
+    }
+
+    // ====== Placeholder for AI integration ======
+    // If you later deploy a small server that proxies an LLM (OpenAI etc.), change sendToAI() to call your endpoint.
+    async function sendToAI(message){
+      // Example placeholder: return null so we use FAQ fallback
+      // In future, do:
+      // const res = await fetch('https://ton-backend.example.com/chat', {method:'POST', body: JSON.stringify({msg:message})});
+      // return (await res.json()).reply;
+      return null;
+    }
+
+    async function handleSend(){
+      const text = chatInput.value.trim();
+      if(!text) return;
+      appendMessage(text,'user');
+      chatInput.value='';
+      appendMessage('…', 'bot'); // temporary typing
+      chatBody.lastChild.style.opacity = 0.6;
+
+      // Try AI first (if you implement later), else fallback to FAQ
+      try{
+        const ai = await sendToAI(text);
+        if(ai){
+          chatBody.removeChild(chatBody.lastChild);
+          appendMessage(ai,'bot');
+        } else {
+          // check FAQ
+          const ans = findBestAnswer(text);
+          chatBody.removeChild(chatBody.lastChild);
+          if(ans) appendMessage(ans,'bot');
+          else appendMessage("Désolé, je n'ai pas la réponse exacte. Essaie une autre question ou consulte les articles.",'bot');
+        }
+      }catch(e){
+        chatBody.removeChild(chatBody.lastChild);
+        appendMessage("Erreur réseau ou serveur. Essaie plus tard.",'bot');
+      }
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') handleSend(); });
+
+    // Small editor modal (very lightweight) — for quick notes / code snippets
+    function openEditor(){
+      const code = prompt("Petit éditeur : colle du HTML/CSS/JS ou notes rapides. Sauvegarde local ?");
+      if(!code) return;
+      // Save to localStorage so user can recover
+      localStorage.setItem('nlm_editor_last', code);
+      alert('Brouillon enregistré localement. Pour l\'intégrer dans le site, copie-le dans un nouvel article sur GitHub.');
+    }
+
+    // Accessibility: close chat with ESC
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') toggleChat(false) });
+
+    // Init: if we have a saved draft, show small toast
+    window.addEventListener('load', ()=>{
+      const draft = localStorage.getItem('nlm_editor_last');
+      if(draft){
+        // small unobtrusive hint
+        console.log('Draft trouvé (local). Use openEditor() to reprendre.');
+      }
+    });
+  </script>
+
+  <!-- Notes visibles par toi (non affichées sur site) :
+       - Pour brancher une vraie IA : héberge un petit backend (Cloudflare Worker, Vercel, Render),
+         qui appelle l'API OpenAI (ou autre). Le front (sendToAI) appelera cet endpoint sécurisé.
+       - Ne mets jamais de clé API directement dans ce fichier front-end.
+       - Si tu veux, je te donne le code backend prêt à déployer.
+  -->
 </body>
   </html>
