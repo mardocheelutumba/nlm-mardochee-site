@@ -1,270 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NLM MARDOCHÉE — Tech, Cours & Chat</title>
-  <meta name="description" content="NLM Mardochée — articles, cours, quiz, chatbot NLM Lutumba. Publie facilement depuis GitHub."/>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <!-- Style principal -->
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NLM Mardochée Vision 243</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="site">
-    <header class="site-header">
-      <div class="brand">
-        <div class="logo">NLM</div>
-        <div>
-          <h1>NLM Lutumba — Tech & IA</h1>
-          <div class="tagline">Explorer • Apprendre • Créer</div>
-        </div>
-      </div>
+  <aside class="sidebar">
+    <h2>NLM Vision 243</h2>
+    <nav>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">Cours</a></li>
+        <li><a href="#">Articles</a></li>
+        <li><a href="#">Éditeur de code</a></li>
+        <li><a href="#">Chat AI</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </aside>
 
-      <div class="header-actions">
-        <input id="searchInput" class="search" type="search" placeholder="Rechercher articles, cours..." aria-label="Recherche">
-        <nav class="topnav" aria-label="Navigation principale">
-          <a href="#accueil">Accueil</a>
-          <a href="#cours">Cours</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </div>
+  <main>
+    <header>
+      <h1>Bienvenue sur NLM Mardochée Vision 243</h1>
+      <p>Plateforme tech éducative pour l’Afrique et le monde.</p>
+      <input type="search" placeholder="Rechercher un cours, un article..." />
+      <select>
+        <option>Français</option>
+        <option>English</option>
+      </select>
     </header>
 
-    <main class="container">
-      <section id="accueil" class="hero">
-        <h2>Bienvenue sur NLM Mardochée</h2>
-        <p class="lead">Le hub pour apprendre l'informatique, l'IA, la cybersécurité et programmer pas à pas. Chat visible en bas → <strong>NLM Lutumba Chat</strong>.</p>
+    <section class="intro">
+      <h2>À propos</h2>
+      <p>Étudiant à l'École Informatique de Finance (EIFI), passionné par les NTIC. Visionnaire, ambitieux, et engagé pour l'éducation numérique.</p>
+    </section>
 
-        <div class="calls">
-          <button class="btn" onclick="openEditor()">Éditeur rapide</button>
-          <button class="btn outline" onclick="openChat()">Poser une question (NLM Chat)</button>
-        </div>
-      </section>
+    <section class="modules">
+      <h2>Modules disponibles</h2>
+      <ul>
+        <li>Algorithmique</li>
+        <li>Programmation</li>
+        <li>Intelligence Artificielle</li>
+        <li>Machine Learning</li>
+        <li>Cybersécurité</li>
+      </ul>
+    </section>
 
-      <section id="cours" class="card" aria-labelledby="cours-title">
-        <h3 id="cours-title">Cours & Articles</h3>
-        <div id="posts" class="posts" aria-live="polite"></div>
-      </section>
+    <section class="chat-ai">
+      <h2>Chat AI</h2>
+      <div class="chat-box">
+        <p><strong>AI :</strong> Bonjour Mardochée ! Que veux-tu apprendre aujourd’hui ?</p>
+      </div>
+    </section>
 
-      <aside class="side" aria-label="Barre latérale">
-        <div class="card contact">
-          <h4>Contact</h4>
-          <p><a href="mailto:nsimbalutumbamardochee@gmail.com">nsimbalutumbamardochee@gmail.com</a></p>
-          <p><a href="https://wa.me/243892420927" target="_blank" rel="noopener">+243 89 242 09 27</a></p>
-          <p><a href="https://wa.me/243817937907" target="_blank" rel="noopener">+243 81 793 79 07</a></p>
-        </div>
+    <section class="formulaire">
+      <h2>Formulaire (facultatif)</h2>
+      <form>
+        <input type="text" placeholder="Nom / Pseudo" />
+        <input type="email" placeholder="Email" />
+        <textarea placeholder="Message ou question..."></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </section>
+  </main>
 
-        <div class="card stats">
-          <h4>Visites</h4>
-          <div id="visits">Chargement...</div>
-        </div>
-
-        <div class="card about">
-          <h4>À propos</h4>
-          <p class="small">Publie des cours, ajoute des quiz, et utilise le chat pour poser des questions.</p>
-        </div>
-      </aside>
-    </main>
-
-    <footer class="site-footer">
-      <div>© 2025 NLM Mardochée — Tous droits réservés</div>
-      <div class="small">Publie chaque jour — tes anciens contenus restent dans l'archive.</div>
-    </footer>
-  </div>
-
-  <!-- Chat bouton visible et remarquable -->
-  <button id="chatBtn" class="chat-btn" aria-label="Ouvrir chat">💬</button>
-
-  <!-- Chat panel -->
-  <div id="chatPanel" class="chat-panel" aria-hidden="true" role="dialog" aria-label="NLM Lutumba Chat">
-    <div class="chat-head">
-      <strong>NLM Lutumba Chat</strong>
-      <button id="closeChat" aria-label="Fermer chat">✖</button>
-    </div>
-    <div id="chatMessages" class="chat-body" aria-live="polite">
-      <div class="msg bot">Salut — pose ta question ou tape "cours" pour des idées.</div>
-    </div>
-    <div class="chat-input">
-      <input id="chatText" placeholder="Écris ta question..." aria-label="Message chat">
-      <button id="chatSend" class="btn">Envoyer</button>
-    </div>
-  </div>
-
-  <!-- Editor quick save (local) -->
-  <div id="editorToast" class="toast" aria-hidden="true">Brouillon enregistré localement</div>
-
-  <script>
-    /***** Données de démonstration (articles) *****/
-    const SAMPLE_POSTS = [
-      {id: 'p1', title: "Découvrir l'intelligence artificielle", date: "2025-08-10", tags: ["IA","Intro"], excerpt: "Bases, usages et premiers pas pour débuter.", content: "Contenu complet..."},
-      {id: 'p2', title: "Cybersécurité : bonnes pratiques", date: "2025-08-09", tags:["Sécurité"], excerpt: "Nettoyage des mots de passe et meilleures pratiques.", content: "Contenu complet..."}
-    ];
-
-    /***** UTIL: visites simples (compteur local) *****/
-    (function trackVisits(){
-      const k = 'nlm_visits_v1';
-      let v = Number(localStorage.getItem(k) || 0);
-      v++;
-      localStorage.setItem(k, v);
-      document.getElementById('visits').textContent = v + ' visites (local)';
-    })();
-
-    /***** RENDU DES ARTICLES, likes & commentaires (localStorage pour MVP) *****/
-    function renderPosts(list){
-      const out = document.getElementById('posts');
-      out.innerHTML = '';
-      list.forEach(post=>{
-        const el = document.createElement('article');
-        el.className = 'post';
-        el.id = post.id;
-        el.innerHTML = `
-          <h4>${post.title}</h4>
-          <div class="meta">Publié le <time datetime="${post.date}">${post.date}</time> • <span class="tags">${post.tags.join(', ')}</span></div>
-          <p class="excerpt">${post.excerpt}</p>
-          <div class="post-actions">
-            <button class="like-btn" data-id="${post.id}">❤ <span class="like-count">0</span></button>
-            <button class="comment-toggle" data-id="${post.id}">Commentaires</button>
-          </div>
-          <div class="comments" data-id="${post.id}" style="display:none">
-            <div class="comment-list"></div>
-            <div class="comment-form">
-              <input class="c-name" placeholder="Ton nom">
-              <textarea class="c-text" placeholder="Écris un commentaire..."></textarea>
-              <button class="c-send btn">Publier</button>
-            </div>
-          </div>
-        `;
-        out.appendChild(el);
-        loadCounts(post.id);
-      });
-      attachPostListeners();
-    }
-
-    function loadCounts(id){
-      // load like count and comments from localStorage
-      const likesKey = `likes_${id}`;
-      const commentsKey = `comments_${id}`;
-      const likeCount = Number(localStorage.getItem(likesKey) || 0);
-      const commentList = JSON.parse(localStorage.getItem(commentsKey) || '[]');
-
-      const postEl = document.getElementById(id);
-      if(!postEl) return;
-      postEl.querySelector('.like-count').textContent = likeCount;
-      const cl = postEl.querySelector('.comment-list');
-      cl.innerHTML = commentList.map(c=>`<div class="comment"><strong>${escapeHtml(c.name)}</strong><div class="c-body">${escapeHtml(c.text)}</div></div>`).join('');
-    }
-
-    function attachPostListeners(){
-      document.querySelectorAll('.like-btn').forEach(btn=>{
-        btn.onclick = ()=>{
-          const id = btn.dataset.id;
-          const k = `likes_${id}`;
-          const n = Number(localStorage.getItem(k) || 0) + 1;
-          localStorage.setItem(k, n);
-          btn.querySelector('.like-count').textContent = n;
-        };
-      });
-
-      document.querySelectorAll('.comment-toggle').forEach(btn=>{
-        btn.onclick = ()=>{
-          const id = btn.dataset.id;
-          const box = document.querySelector(`.comments[data-id="${id}"]`);
-          box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        };
-      });
-
-      document.querySelectorAll('.c-send').forEach(b=>{
-        b.onclick = (e)=>{
-          const form = e.target.closest('.comments');
-          const id = form.dataset.id;
-          const name = form.querySelector('.c-name').value.trim() || 'Anonyme';
-          const text = form.querySelector('.c-text').value.trim();
-          if(!text){ alert('Écris ton commentaire.'); return; }
-          const key = `comments_${id}`;
-          const arr = JSON.parse(localStorage.getItem(key) || '[]');
-          arr.unshift({name, text, date: new Date().toISOString()});
-          localStorage.setItem(key, JSON.stringify(arr));
-          loadCounts(id);
-          form.querySelector('.c-text').value = '';
-        };
-      });
-    }
-
-    /***** SEARCH (filtre simple) *****/
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', (e)=>{
-      const q = e.target.value.toLowerCase();
-      const filtered = SAMPLE_POSTS.filter(p => (p.title + ' ' + p.excerpt + ' ' + p.tags.join(' ')).toLowerCase().includes(q));
-      renderPosts(filtered);
-    });
-
-    /***** Chat UI + simple FAQ fallback *****/
-    const chatBtn = document.getElementById('chatBtn');
-    const chatPanel = document.getElementById('chatPanel');
-    const chatSend = document.getElementById('chatSend');
-    const chatText = document.getElementById('chatText');
-    const chatMessages = document.getElementById('chatMessages');
-
-    function openChat(){ chatPanel.style.display = 'flex'; chatPanel.setAttribute('aria-hidden','false'); chatText.focus(); }
-    function closeChat(){ chatPanel.style.display = 'none'; chatPanel.setAttribute('aria-hidden','true'); }
-
-    chatBtn.addEventListener('click', openChat);
-    document.getElementById('closeChat').addEventListener('click', closeChat);
-
-    async function sendToAI(msg){
-      // Placeholder: No external API. Try to match FAQ keys locally.
-      const faq = [
-        {k: 'ia', a: "L'IA est un ensemble de techniques... (résumé)"},
-        {k: 'python', a: "Python est un excellent langage pour débuter..."},
-        {k: 'sécurité', a: "Commence par utiliser des mots de passe forts et HTTPS..."},
-      ];
-      const lower = msg.toLowerCase();
-      for(const f of faq) if(lower.includes(f.k)) return f.a;
-      return null;
-    }
-
-    async function appendChat(who, text){
-      const d = document.createElement('div');
-      d.className = 'msg ' + (who === 'user' ? 'user' : 'bot');
-      d.textContent = text;
-      chatMessages.appendChild(d);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    async function handleChatSend(){
-      const txt = chatText.value.trim();
-      if(!txt) return;
-      await appendChat('user', txt);
-      chatText.value = '';
-      const ai = await sendToAI(txt);
-      if(ai){
-        await appendChat('bot', ai);
-      } else {
-        await appendChat('bot', "Désolé, je n'ai pas de réponse complète. Essaie une autre question.");
-      }
-    }
-
-    chatSend.addEventListener('click', handleChatSend);
-    chatText.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') handleChatSend(); });
-
-    /***** Editor quick-save (local) *****/
-    function openEditor(){
-      const code = prompt("Éditeur rapide: collez une idée, un cours ou un snippet. (Enregistré localement)");
-      if(!code) return;
-      localStorage.setItem('nlm_editor_draft', code);
-      const t = document.getElementById('editorToast');
-      t.style.display = 'block';
-      setTimeout(()=> t.style.display = 'none', 2000);
-    }
-
-    /***** UTIL: small helper *****/
-    function escapeHtml(str){
-      return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
-    }
-
-    // initial render
-    renderPosts(SAMPLE_POSTS);
-  </script>
+  <footer>
+    <p>© 2025 NLM Mardochée Vision 243 — Tous droits réservés</p>
+    <p>Contact : nsimbalutumbamardochee@gmail.com | WhatsApp : +243892420927 / +243817937907</p>
+  </footer>
 </body>
-  </html>
+        </html>
