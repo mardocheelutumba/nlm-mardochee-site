@@ -1,327 +1,224 @@
-// app.js (front) — module
-// - Ne contient PAS la clé API.
-// - Doit appeler votre backend sécurisé : POST /api/chat { message }
-// - Sauvegarde likes & comments en localStorage (pour dev)
+// app.js (module, front) - version complète
+const qs = (s,c=document) => c.querySelector(s);
+const qsa = (s,c=document) => Array.from(c.querySelectorAll(s));
 
-/* =======================
-   Helpers localStorage JSON
-   ======================= */
-const storage = {
-  get(key, fallback) {
-    try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
-    catch (e) { return fallback; }
-  },
-  set(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); }
-    catch (e) { /* ignore */ }
-  }
-};
-
-const qs = (sel, ctx = document) => ctx.querySelector(sel);
-const qsa = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
-
-/* =======================
-   Variables DOM
-   ======================= */
-const mobileMenuBtn = qs('#mobileMenuBtn');
+/* DOM */
+const mobileBtn = qs('#mobileMenuBtn');
 const sidebar = qs('#sidebar');
-const sidebarOverlay = qs('#sidebarOverlay');
-const sidebarCloseBtn = qs('#sidebarCloseBtn');
-const themeToggleBtn = qs('#themeToggleBtn');
+const overlay = qs('#sidebarOverlay');
+const sidebarClose = qs('#sidebarCloseBtn');
+const themeBtn = qs('#themeToggleBtn');
+
+const welcomeCard = qs('#welcomeCard');
+const welcomeActions = qsa('.welcome-actions .btn');
+
+const coursesList = qs('#coursesList');
+const newCourseForm = qs('#newCourseForm');
+const articlesList = qs('#articlesList');
 
 const chatForm = qs('#chatForm');
 const chatInput = qs('#chatInput');
 const chatBox = qs('#chatBox');
+const verifyBtn = qs('#verifyBtn');
+const factResult = qs('#factResult');
 
-const likeButtonsSelector = '.like-btn';
-const commentButtonsSelector = '.comment-btn';
-const shareButtonsSelector = '.share-btn';
+const newsFeed = qs('#newsFeed');
+const recentComments = qs('#recentComments');
 
-/* =======================
-   Init on DOMContentLoaded
-   ======================= */
+/* Local storage helpers */
+const storage = {
+  get(k,d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch(e){return d} },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
+};
+
+/* Init */
 document.addEventListener('DOMContentLoaded', () => {
   initSidebar();
   initTheme();
-  initArticleInteractions();
+  initWelcome();
+  initCourses();
+  initArticles();
   initChat();
-  initContactForm();
-  initAccessibility();
+  loadNews();
+  loadRecentComments();
 });
 
-/* =======================
-   Sidebar mobile open/close
-   ======================= */
-function initSidebar() {
-  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openSidebar);
-  if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
-  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+/* ---------------- Sidebar ---------------- */
+function initSidebar(){
+  mobileBtn?.addEventListener('click', ()=> { sidebar.classList.add('open'); overlay.classList.add('active'); });
+  sidebarClose?.addEventListener('click', closeSidebar);
+  overlay?.addEventListener('click', closeSidebar);
+  qsa('.nav-main a').forEach(a => a.addEventListener('click', ()=> { if(window.innerWidth < 992) closeSidebar(); }));
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeSidebar(); });
+}
+function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('active'); }
 
-  // Close on ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
-  });
-}
-function openSidebar() {
-  sidebar.classList.add('open');
-  sidebarOverlay?.classList.add('active');
-  document.body.classList.add('sidebar-open');
-}
-function closeSidebar() {
-  sidebar.classList.remove('open');
-  sidebarOverlay?.classList.remove('active');
-  document.body.classList.remove('sidebar-open');
-}
-
-/* =======================
-   Theme toggle (dark / light)
-   ======================= */
-function initTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
-  applyTheme(saved);
-  if (!themeToggleBtn) return;
-  themeToggleBtn.addEventListener('click', () => {
-    const current = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
-    applyTheme(next);
+/* ---------------- Theme ---------------- */
+function initTheme(){
+  const t = localStorage.getItem('theme') || 'dark';
+  applyTheme(t);
+  themeBtn?.addEventListener('click', ()=>{
+    const next = document.body.classList.toggle('light-mode') ? 'light' : 'dark';
     localStorage.setItem('theme', next);
+    applyTheme(next);
   });
 }
-function applyTheme(name) {
-  if (name === 'light') {
-    document.body.classList.add('light-mode');
-    themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i> Clair';
-    themeToggleBtn.setAttribute('aria-pressed', 'true');
-  } else {
-    document.body.classList.remove('light-mode');
-    themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i> Sombre';
-    themeToggleBtn.setAttribute('aria-pressed', 'false');
-  }
+function applyTheme(name){
+  if(name==='light'){ document.body.classList.add('light-mode'); themeBtn && (themeBtn.textContent='Clair'); }
+  else { document.body.classList.remove('light-mode'); themeBtn && (themeBtn.textContent='Sombre'); }
 }
 
-/* =======================
-   Articles: likes / comments / share
-   ======================= */
-function initArticleInteractions() {
-  const likes = storage.get('nlm_likes', {});
-  const userLikes = storage.get('nlm_userLikes', {});
-  const comments = storage.get('nlm_comments', {});
+/* ---------------- Welcome ---------------- */
+function initWelcome(){
+  welcomeActions.forEach(btn => btn.addEventListener('click', (e)=> {
+    const action = e.currentTarget.dataset.action;
+    if(action==='ask') scrollTo('#chat'), chatInput?.focus();
+    if(action==='cours') scrollTo('#cours');
+    if(action==='actus') scrollTo('#articles');
+    welcomeCard.style.display = 'none';
+  }));
+}
+function scrollTo(sel){ const el = qs(sel); el && el.scrollIntoView({behavior:'smooth'}); }
 
-  // init like counts & event
-  qsa(likeButtonsSelector).forEach(btn => {
-    const id = btn.dataset.id;
-    if (!id) return;
-    const countEl = btn.querySelector('.like-count');
-    if (countEl) countEl.textContent = likes[id] || 0;
-    if (userLikes[id]) {
-      btn.classList.add('active');
-      const icon = btn.querySelector('i');
-      if (icon) icon.className = 'fas fa-thumbs-up';
-    }
-    btn.addEventListener('click', () => {
-      toggleLike(btn, id, likes, userLikes);
-    });
+/* ---------------- Courses ---------------- */
+function initCourses(){
+  const courses = storage.get('nlm_courses', []);
+  renderCourses(courses);
+  newCourseForm?.addEventListener('submit', e=>{
+    e.preventDefault();
+    const fd = new FormData(newCourseForm);
+    const title = fd.get('title'), plan = fd.get('plan');
+    const course = { id: 'c_'+Date.now(), title, plan, created: new Date().toISOString() };
+    courses.unshift(course);
+    storage.set('nlm_courses', courses);
+    renderCourses(courses);
+    newCourseForm.reset();
+    scrollTo('#cours');
   });
-
-  // comments toggle / load
-  qsa(commentButtonsSelector).forEach(btn => {
-    const id = btn.dataset.id;
-    if (!id) return;
-    btn.addEventListener('click', () => {
-      const section = qs(`#commentsSection-${id}`);
-      if (!section) return;
-      const open = section.style.display === 'block';
-      section.style.display = open ? 'none' : 'block';
-      btn.setAttribute('aria-expanded', (!open).toString());
-      if (!open) renderComments(id, comments);
-    });
+}
+function renderCourses(list){
+  coursesList.innerHTML = '';
+  if(!list?.length) coursesList.innerHTML = '<div class="card small">Aucun cours pour l\'instant.</div>';
+  list.forEach(c => {
+    const el = document.createElement('div'); el.className='card';
+    el.innerHTML = `<h4>${escapeHtml(c.title)}</h4><div class="muted small">Créé: ${new Date(c.created).toLocaleString()}</div><p>${escapeHtml(c.plan||'')}</p><div style="margin-top:8px"><button class="btn ghost" data-id="${c.id}" onclick="editCourse('${c.id}')">Éditer</button></div>`;
+    coursesList.appendChild(el);
   });
+}
+window.editCourse = function(id){
+  const courses = storage.get('nlm_courses', []);
+  const c = courses.find(x=>x.id===id);
+  if(!c) return alert('Cours introuvable');
+  const title = prompt('Titre', c.title); if(title===null) return;
+  const plan = prompt('Plan / notes', c.plan);
+  c.title = title; c.plan = plan; storage.set('nlm_courses', courses); renderCourses(courses);
+};
 
-  // share
-  qsa(shareButtonsSelector).forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const id = btn.dataset.id || '';
-      const url = `${location.origin}${location.pathname}#${id}`;
-      if (navigator.share) {
-        try { await navigator.share({ title: document.title, text: 'Découvre cet article', url }); }
-        catch (e) { /* user cancelled */ }
-      } else if (navigator.clipboard) {
-        try { await navigator.clipboard.writeText(url); alert('Lien copié !'); }
-        catch (e) { prompt('Copie ce lien', url); }
-      } else prompt('Copie ce lien', url);
-    });
+/* ---------------- Articles ---------------- */
+function initArticles(){
+  const demo = storage.get('nlm_articles', [
+    {id:'a1', title:'Découvrir l\'IA', date:'2025-08-10', excerpt:'Bases et usages pour débuter.'}
+  ]);
+  renderArticles(demo);
+  storage.set('nlm_articles', demo);
+}
+function renderArticles(list){
+  articlesList.innerHTML = '';
+  list.forEach(a=>{
+    const el = document.createElement('article'); el.className='card article-card';
+    el.innerHTML = `<h4>${escapeHtml(a.title)}</h4><div class="muted small">${escapeHtml(a.date)}</div><p>${escapeHtml(a.excerpt)}</p>`;
+    articlesList.appendChild(el);
   });
-
-  // expose addComment
-  window.addComment = function(articleId) {
-    const input = qs(`#commentInput-${articleId}`);
-    if (!input) return;
-    const text = input.value.trim();
-    if (!text) return;
-    const entry = { author: 'Vous', content: text, date: new Date().toISOString() };
-    comments[articleId] = comments[articleId] || [];
-    comments[articleId].push(entry);
-    storage.set('nlm_comments', comments);
-    // update UI (prepend)
-    const list = qs(`#commentsList-${articleId}`);
-    if (list) {
-      const node = createCommentNode(entry);
-      // remove default placeholder if present
-      const placeholder = list.querySelector('p');
-      if (placeholder && list.children.length === 1) list.innerHTML = '';
-      list.prepend(node);
-    }
-    input.value = '';
-  };
 }
 
-function toggleLike(btn, id, likes, userLikes) {
-  const countEl = btn.querySelector('.like-count');
-  const icon = btn.querySelector('i');
-  const isLiked = !!userLikes[id];
-  if (isLiked) {
-    likes[id] = Math.max(0, (likes[id] || 1) - 1);
-    delete userLikes[id];
-    btn.classList.remove('active');
-    if (icon) icon.className = 'far fa-thumbs-up';
-  } else {
-    likes[id] = (likes[id] || 0) + 1;
-    userLikes[id] = true;
-    btn.classList.add('active');
-    if (icon) icon.className = 'fas fa-thumbs-up';
-    // petit effet visuel
-    countEl?.animate([{ transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 200 });
-  }
-  if (countEl) countEl.textContent = likes[id] || 0;
-  storage.set('nlm_likes', likes);
-  storage.set('nlm_userLikes', userLikes);
-}
-
-function renderComments(articleId, commentsStore) {
-  const list = qs(`#commentsList-${articleId}`);
-  if (!list) return;
-  list.innerHTML = '';
-  const arr = commentsStore[articleId] || [];
-  if (!arr.length) {
-    list.innerHTML = '<p class="small muted">Aucun commentaire pour l\'instant.</p>';
-    return;
-  }
-  arr.slice().reverse().forEach(c => list.appendChild(createCommentNode(c)));
-}
-
-function createCommentNode(c) {
-  const div = document.createElement('div');
-  div.className = 'comment';
-  div.innerHTML = `
-    <div class="comment-header"><strong>${escapeHtml(c.author)}</strong><span class="muted">${new Date(c.date).toLocaleString()}</span></div>
-    <div class="comment-content">${escapeHtml(c.content)}</div>
-  `;
-  return div;
-}
-
-/* =======================
-   Chat — communication avec backend /api/chat
-   ======================= */
-function initChat() {
-  // restore quick welcome
-  appendAiMessage("Bonjour — je suis Nlm Lutumba AI. Pose ta question.");
-
-  if (!chatForm || !chatInput || !chatBox) return;
-
-  // submit
-  chatForm.addEventListener('submit', async (e) => {
+/* ---------------- Chat ---------------- */
+function initChat(){
+  appendAi("Bonjour — je suis Nlm Lutumba AI. Pose ta question 👋");
+  chatForm?.addEventListener('submit', async e=>{
     e.preventDefault();
     const text = chatInput.value.trim();
-    if (!text) return;
-    appendUserMessage(text);
-    chatInput.value = '';
+    if(!text) return;
+    appendUser(text); chatInput.value='';
     await askServer(text);
   });
+  verifyBtn?.addEventListener('click', async ()=>{
+    const claim = prompt('Colle l\'affirmation à vérifier :');
+    if(!claim) return;
+    appendUser(`Vérifier : ${claim}`);
+    await verifyClaim(claim);
+  });
+}
+function appendUser(txt){
+  const d=document.createElement('div'); d.className='msg user'; d.innerHTML=`<div class="chat-message user"><strong>Vous :</strong> ${escapeHtml(txt)}</div>`;
+  chatBox.appendChild(d); chatBox.scrollTop=chatBox.scrollHeight;
+}
+function appendAi(txt){
+  const d=document.createElement('div'); d.className='msg ai'; d.innerHTML=`<div class="chat-message ai"><strong>Nlm Lutumba AI :</strong> ${escapeHtml(txt)}</div>`;
+  chatBox.appendChild(d); chatBox.scrollTop=chatBox.scrollHeight;
 }
 
-function appendUserMessage(text) {
-  const div = document.createElement('div');
-  div.className = 'msg user';
-  div.innerHTML = `<div class="chat-message user"><strong>Vous :</strong> ${escapeHtml(text)}</div>`;
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+/* askServer: try backend -> fallback local */
+async function askServer(text){
+  // typing indicator
+  const loader = document.createElement('div'); loader.className='msg ai typing'; loader.innerHTML=`<div class="chat-message ai"><strong>Nlm Lutumba AI :</strong> <em>...</em></div>`;
+  chatBox.appendChild(loader); chatBox.scrollTop=chatBox.scrollHeight;
 
-function appendAiMessage(text) {
-  const div = document.createElement('div');
-  div.className = 'msg ai';
-  div.innerHTML = `<div class="chat-message ai"><strong>Nlm Lutumba AI :</strong> ${escapeHtml(text)}</div>`;
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-/* askServer: POST /api/chat { message } -> expects { reply } */
-async function askServer(message) {
-  // show typing indicator
-  const typingNode = document.createElement('div');
-  typingNode.className = 'msg ai typing';
-  typingNode.innerHTML = `<div class="chat-message ai"><strong>Nlm Lutumba AI :</strong> <em>...</em></div>`;
-  chatBox.appendChild(typingNode);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
+  // Try calling backend (expected at /api/chat). If 404 or network error -> fallback local.
   try {
-    const resp = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
-    });
-
-    // remove typing indicator
-    typingNode.remove();
-
-    if (!resp.ok) {
-      appendAiMessage('Désolé, serveur indisponible. Réessaie plus tard.');
-      console.error('Server error', resp.status);
+    const resp = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ message: text }) });
+    if(!resp.ok) {
+      // fallback: local simple reply (demo)
+      loader.remove();
+      const fallback = localFallbackReply(text);
+      appendAi(fallback);
       return;
     }
-
     const data = await resp.json();
-    // expected { reply: "..." }
-    const reply = data?.reply ?? data?.message ?? 'Aucune réponse.';
-    appendAiMessage(reply);
-  } catch (err) {
-    typingNode.remove();
-    appendAiMessage('Problème réseau — impossible de joindre le serveur.');
-    console.error(err);
+    loader.remove();
+    appendAi(data.reply || 'Pas de réponse.');
+  } catch(err){
+    loader.remove();
+    const fallback = localFallbackReply(text);
+    appendAi(fallback);
   }
 }
 
-/* =======================
-   Contact form (simulation)
-   ======================= */
-function initContactForm() {
-  const form = qs('#contactForm');
-  if (!form) return;
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const fd = new FormData(form);
-    const name = fd.get('name') || fd.get('nom') || 'anonyme';
-    alert(`Merci ${name} — message reçu. (simulation)`);
-    form.reset();
-  });
+/* verifyClaim: calls /api/verify or fallback */
+async function verifyClaim(claim){
+  factResult.style.display='block'; factResult.textContent='Vérification en cours...';
+  try {
+    const res = await fetch('/api/verify', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ claim }) });
+    if(!res.ok){ factResult.textContent='Serveur indisponible — vérification impossible.'; return; }
+    const data = await res.json();
+    factResult.innerHTML = `<strong>Verdict :</strong> ${escapeHtml(data.verdict||'Indéterminé')} — <strong>Confiance :</strong> ${escapeHtml(String(data.confidence||0))}%<div style="margin-top:8px"><strong>Explication :</strong><p>${escapeHtml(data.explanation||'')}</p></div>`;
+  } catch(e){
+    factResult.textContent='Erreur réseau — impossible de vérifier.';
+  }
 }
 
-/* =======================
-   Accessibility helpers
-   ======================= */
-function initAccessibility() {
-  window.addEventListener('keydown', function onFirstTab(e) {
-    if (e.key === 'Tab') {
-      document.body.classList.add('user-is-tabbing');
-      window.removeEventListener('keydown', onFirstTab);
-    }
-  });
+/* Local fallback reply (very simple, for offline/demo) */
+function localFallbackReply(userText){
+  const t = userText.toLowerCase();
+  if(t.includes('bonjour') || t.includes('salut')) return "Bonjour ! Je suis Nlm Lutumba AI (mode démo). Demande-moi un cours, ou tape 'quelle est la capitale de France' par exemple.";
+  if(t.includes('capital') && t.includes('france')) return "La capitale de la France est Paris.";
+  if(t.includes('ia') || t.includes('intelligence')) return "L'IA (intelligence artificielle) est un domaine de l'informatique centré sur la création de systèmes capables d'exécuter des tâches nécessitant normalement l'intelligence humaine.";
+  return "Mode démo : je n'ai pas de backend connecté. Pour des réponses complètes, déploie le backend sécurisé (instructions dans le README).";
 }
 
-/* =======================
-   Small utilities
-   ======================= */
-function escapeHtml(s) {
-  if (!s) return '';
-  return String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-        }
+/* ---------------- News & comments ---------------- */
+function loadNews(){
+  newsFeed.textContent = 'Chargement...';
+  setTimeout(()=> {
+    newsFeed.innerHTML = `<ul><li>OpenAI — mise à jour (simulée)</li><li>Tutoriel: publier un cours (simulé)</li></ul>`;
+  }, 700);
+}
+
+function loadRecentComments(){
+  const comments = storage.get('nlm_comments', {});
+  const arr = [];
+  Object.values(comments).forEach(list => { if(Array.isArray(list)) arr.push(...list); });
+  recentComments.textContent = arr.length ? arr.slice(-5).map(c=>`${c.author}: ${c.content}`).join(' • ') : 'Aucun commentaire';
+}
+
+/* ---------------- Utilities ---------------- */
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
