@@ -3,41 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NLM Mardochée vision 243 </title>
+  <title>NLM Mardochée Vision243 </title>
   <meta name="description" content="Hub Tech & IA — Nlm Lutumba AI. Cours, articles, quiz, chat intelligent." />
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome pour icônes -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-  <!-- Style (séparé) -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Meta pour sécurité / Referrer policy (bonnes pratiques) -->
-  <meta name="referrer" content="no-referrer" />
 </head>
 <body>
 
-  <!-- ============================
-       Bouton menu mobile (visible sur petits écrans)
-       Place ce bouton immédiatement après <body>
-       ============================ -->
-  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Ouvrir le menu">
-    <i class="fas fa-bars" aria-hidden="true"></i>
-  </button>
-
-  <!-- Overlay pour fermer la sidebar (mobile) -->
+  <!-- Mobile menu -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Ouvrir le menu">☰</button>
   <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
-  <!-- ============================
-       Sidebar principale (gauche)
-       Remplace / améliore l'ancienne sidebar
-       ============================ -->
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navigation principale">
     <div class="brand">
-      <div class="logo" aria-hidden="true">NLM</div>
+      <div class="logo">NLM</div>
       <div class="brand-text">
         <div class="brand-title">NLM Mardochée</div>
         <div class="brand-sub small">Vision 243 — Hub Tech & IA</div>
@@ -46,156 +26,142 @@
 
     <nav class="nav-main" aria-label="Menu principal">
       <ul>
-        <li><a href="#accueil"><i class="fas fa-home"></i> Accueil</a></li>
-        <li><a href="#cours"><i class="fas fa-book"></i> Cours</a></li>
-        <li><a href="#articles"><i class="fas fa-newspaper"></i> Articles</a></li>
-        <li><a href="#editeur"><i class="fas fa-code"></i> Éditeur</a></li>
-        <li><a href="#chat"><i class="fas fa-robot"></i> Chat AI</a></li>
-        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="#accueil">🏠 Accueil</a></li>
+        <li><a href="#cours">📚 Cours</a></li>
+        <li><a href="#articles">📰 Articles</a></li>
+        <li><a href="#quiz">🧩 Quiz</a></li>
+        <li><a href="#chat">🤖 Chat AI</a></li>
+        <li><a href="#contact">✉️ Contact</a></li>
       </ul>
     </nav>
 
     <div class="sidebar-bottom">
-      <div class="small">Préférence</div>
       <div class="theme-toggle">
-        <button id="themeToggleBtn" class="btn ghost" aria-pressed="false"><i class="fas fa-moon"></i> Sombre</button>
+        <button id="themeToggleBtn" class="btn ghost" aria-pressed="false"><i class="fas"></i> Sombre</button>
       </div>
-
-      <button class="toggle-btn" id="sidebarCloseBtn" aria-label="Fermer le menu">
-        <i class="fas fa-times" aria-hidden="true"></i>
-      </button>
+      <button id="sidebarCloseBtn" class="toggle-btn" aria-label="Fermer le menu">✕</button>
     </div>
   </aside>
 
-  <!-- ============================
-       Page wrapper (main + right column)
-       ============================ -->
+  <!-- PAGE (main + right column) -->
   <div class="page">
 
-    <!-- ======= Main content (take remaining space) ======= -->
+    <!-- MAIN -->
     <main class="content" id="mainContent">
 
-      <!-- Hero / header -->
+      <!-- HERO -->
       <header id="accueil" class="hero">
         <div class="hero-top">
-          <select aria-label="Choisir la langue" id="langSelect">
+          <select id="langSelect" aria-label="Langue">
             <option value="fr">Français</option>
             <option value="en">English</option>
           </select>
-
-          <div class="profile-icon" title="Mon profil">👤</div>
+          <div class="profile-icon">👤</div>
         </div>
 
-        <h1>NLM Mardochée — Nlm Lutumba AI</h1>
-        <p class="subtitle">Apprends l'informatique, l'IA, la cybersécurité. Discute avec <strong>Nlm Lutumba AI</strong> — conçu pour répondre clairement et en français.</p>
+        <h1>NLM Mardochée — <span class="accent">Nlm Lutumba AI</span></h1>
+        <p class="subtitle">Hub d'apprentissage tech, IA et cybersécurité. Conçu pour publier des cours, articles et vérifier l'information.</p>
 
         <div class="search-row">
           <input id="globalSearch" type="search" placeholder="Rechercher un cours, un article..." aria-label="Rechercher"/>
         </div>
-      </header>
 
-      <!-- Thèmes / modules -->
-      <section id="cours" class="modules">
-        <h2>Thèmes</h2>
-        <ul class="modules-list">
-          <li>Algorithmique</li>
-          <li>Programmation</li>
-          <li>Intelligence Artificielle</li>
-          <li>Cybersécurité</li>
-          <li>Discussions</li>
-        </ul>
-      </section>
-
-      <!-- Articles / leçon -->
-      <section id="articles" class="articles">
-        <h2>Cours & Articles</h2>
-
-        <article class="card article-card" data-id="article-ia-intro">
-          <div class="card-head">
-            <h3>Découvrir l'intelligence artificielle</h3>
-            <div class="meta">Publié le 2025-08-10 • IA, Intro</div>
+        <div id="welcomeCard" class="card welcome">
+          <h3>Bienvenue 👋</h3>
+          <p>Je suis <strong>Nlm Lutumba AI</strong>. Choisis une action :</p>
+          <div class="welcome-actions">
+            <button data-action="ask" class="btn">Poser une question</button>
+            <button data-action="cours" class="btn ghost">Voir les cours</button>
+            <button data-action="actus" class="btn ghost">Actualités</button>
           </div>
-
-          <p class="excerpt">Bases, usages et premiers pas pour débuter.</p>
-
-          <div class="article-actions">
-            <button class="like-btn" data-id="article-ia-intro" aria-pressed="false"><i class="far fa-thumbs-up"></i> <span class="label">J'aime</span> <span class="like-count">0</span></button>
-            <button class="comment-btn" data-id="article-ia-intro" aria-expanded="false"><i class="far fa-comment"></i> Commenter</button>
-            <button class="share-btn" data-id="article-ia-intro"><i class="fas fa-share-alt"></i> Partager</button>
-          </div>
-
-          <!-- Comment section (hidden by default) -->
-          <div class="comment-section" id="commentsSection-article-ia-intro" aria-hidden="true" style="display:none;">
-            <div class="comment-input">
-              <input id="commentInput-article-ia-intro" type="text" placeholder="Ajouter un commentaire..." aria-label="Ajouter un commentaire"/>
-              <button class="btn" type="button" onclick="addComment('article-ia-intro')" aria-label="Envoyer commentaire"><i class="fas fa-paper-plane"></i></button>
-            </div>
-            <div class="comments-list" id="commentsList-article-ia-intro"></div>
-          </div>
-        </article>
-
-      </section>
-
-      <!-- Chat / Nlm Lutumba AI -->
-      <section id="chat" class="chat">
-        <h2>Nlm Lutumba AI</h2>
-
-        <div class="chat-wrapper">
-          <div id="chatBox" class="chat-box" role="log" aria-live="polite">
-            <!-- messages ajoutés dynamiquement -->
-          </div>
-
-          <form id="chatForm" class="chat-form" autocomplete="off">
-            <input id="chatInput" name="message" placeholder="Pose ta question à Nlm Lutumba AI..." aria-label="Message" required />
-            <button id="chatSendBtn" class="btn" type="submit" aria-label="Envoyer">Envoyer</button>
-          </form>
         </div>
 
-        <div class="note small muted">Les réponses sont générées par Nlm Lutumba AI (via API sécurisée côté serveur).</div>
+      </header>
+
+      <!-- COURS -->
+      <section id="cours" class="modules">
+        <h2>Mes cours</h2>
+        <div id="coursesList" class="cards-grid"></div>
+
+        <div class="card small">
+          <h4>Créer un cours</h4>
+          <form id="newCourseForm">
+            <input name="title" placeholder="Titre du cours" required />
+            <textarea name="plan" placeholder="Plan / notes"></textarea>
+            <button type="submit" class="btn">Créer</button>
+          </form>
+        </div>
       </section>
 
-      <!-- Contact -->
+      <!-- ARTICLES -->
+      <section id="articles" class="articles">
+        <h2>Articles & actualités</h2>
+        <div id="articlesList" class="cards-grid"></div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz" class="quiz">
+        <h2>Quiz rapide</h2>
+        <div id="quizBox" class="card small">
+          <p>Quiz disponible — bientôt interactif.</p>
+        </div>
+      </section>
+
+      <!-- CHAT -->
+      <section id="chat" class="chat">
+        <h2>Nlm Lutumba AI</h2>
+        <div class="chat-wrapper">
+          <div id="chatBox" class="chat-box" role="log" aria-live="polite"></div>
+
+          <form id="chatForm" class="chat-form" autocomplete="off">
+            <input id="chatInput" name="message" placeholder="Pose ta question..." required />
+            <button id="chatSendBtn" class="btn" type="submit">Envoyer</button>
+            <button id="verifyBtn" type="button" class="btn ghost">Vérifier</button>
+          </form>
+        </div>
+        <div id="factResult" class="card small" style="display:none;"></div>
+      </section>
+
+      <!-- CONTACT -->
       <section id="contact" class="formulaire">
         <h2>Contact</h2>
         <form id="contactForm">
-          <input name="name" type="text" placeholder="Nom / Pseudo" required />
+          <input name="name" placeholder="Nom / Pseudo" required />
           <input name="email" type="email" placeholder="Email" required />
-          <textarea name="message" placeholder="Message ou question..." required></textarea>
+          <textarea name="message" placeholder="Message..." required></textarea>
           <button type="submit" class="btn">Envoyer</button>
         </form>
       </section>
 
-      <!-- Profil -->
-      <section id="profil" class="profil">
-        <h2>À propos</h2>
-        <p>Étudiant EIFI — Passion NTIC. Email : nsimbalutumbamardochee@gmail.com</p>
-      </section>
-
     </main>
 
-    <!-- ======= Right column (actualités, commentaires récents) ======= -->
-    <aside class="right-column" aria-label="Colonne de droite">
+    <!-- RIGHT COL -->
+    <aside class="right-column" aria-label="Colonne droite">
       <div class="card small">
         <h4>Actualités Tech</h4>
-        <div id="newsFeed" class="small muted">Flux simulé — à connecter via RSS/API.</div>
+        <div id="newsFeed" class="small muted">Chargement...</div>
       </div>
 
       <div class="card small">
         <h4>Commentaires récents</h4>
-        <div id="recentComments" class="small muted">Aucun commentaire pour l'instant.</div>
+        <div id="recentComments" class="small muted">Aucun commentaire</div>
       </div>
     </aside>
+
   </div> <!-- /.page -->
 
-  <!-- Footer (en dehors du main pour rester collé au bas) -->
-  <footer class="site-footer" role="contentinfo">
+  <!-- FOOTER -->
+  <footer class="site-footer">
     <div class="footer-inner">
-      <div>© 2025 NLM Mardochée vision 243 </div>
-      <div class="small muted">Made with 💙 — Design responsive & sécurisé</div>
+      <div>© 2025 NLM Mardochée Vision243 </div>
+      <div class="small muted">Design pro • Responsive • Sécurisé</div>
     </div>
   </footer>
 
-  <!-- App JS (séparé) - utilise fetch('/api/chat') pour appeler le serveur sécurisé -->
-  <script src="app.js" type="module"></script>
+  <!-- Font Awesome icons (optional CDN) -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- App -->
+  <script type="module" src="app.js"></script>
 </body>
-                                                                  </html>
+          </html>
